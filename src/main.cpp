@@ -15,5 +15,7 @@ int main() {
 
   PutOption put(100, 1);
 
+  prettyPrint(put);
+
   return 0;
 }
