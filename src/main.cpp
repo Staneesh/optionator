@@ -1,5 +1,7 @@
 #include <iostream>
 
+#include "option.hpp"
+
 using namespace std;
 
 int main() {
@@ -8,6 +10,12 @@ int main() {
   ios_base::sync_with_stdio(false);
 
   cerr << "Hello!" << endl;
+
+  Option<OptionType::CALL> call(100, 1);
+
+  PutOption put(100, 1);
+
+  prettyPrint(put);
 
   return 0;
 }

@@ -3,6 +3,7 @@ project( project )
 
 set( SOURCES
 	src/main.cpp
+  src/option.cpp
 )
 
 add_executable( project ${SOURCES} )
