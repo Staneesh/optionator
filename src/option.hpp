@@ -98,7 +98,7 @@ template <OptionType type> unsigned Option<type>::initializeFlags() {
   return (flags);
 };
 
-// Generic methods must be in .hpp...?
+// Generic methods must be in .hpp!
 template <OptionType type>
 Option<type>::Option(double strikePrice, double timeToMaturity)
     : m_strikePrice(strikePrice), m_timeToMaturity(timeToMaturity),
@@ -108,5 +108,5 @@ Option<type>::Option(double strikePrice, double timeToMaturity)
 using CallOption = Option<OptionType::CALL>;
 using PutOption = Option<OptionType::PUT>;
 
-// Just to ilustrate
+// Just to ilustrate the example from the comment of class "Option":
 template <OptionType type> void prettyPrint(Option<type> anyOption) {}
