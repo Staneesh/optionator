@@ -9,6 +9,13 @@ enum OptionType {
   PUT,
 };
 
+enum OptionPosition {
+  LONG,
+  SHORT,
+};
+
+class OptionBase {};
+
 // The below block defines a class template - you can imagine it defines
 // a whole family of classes called 'Option', such that the OptionType can
 // assume either one of two values: CALL or PUT. You specify the Option class
@@ -49,7 +56,8 @@ enum OptionType {
 //   std::cerr << anyOption.price(); // <- .price() implemented for all options
 // }
 // prettyPrint(put); // <- notice how normal the call looks - no template args
-template <OptionType type> class Option {
+template <OptionType type, OptionPosition position>
+class Option : public OptionBase {
 public:
   Option(double strikePrice, double timeToMaturity);
 
@@ -87,26 +95,32 @@ private:
 
     bit 0: if 0 - uninitialized, if 1 - initialized
     bit 1: if 0 - call, if 1 - put
+    bit 2: if 0 - long, if 1 - short
   */
-  const unsigned m_flags : 2;
+  const unsigned m_flags : 3;
 };
 
 // A static method must be defined in a header:
-template <OptionType type> unsigned Option<type>::initializeFlags() {
+template <OptionType type, OptionPosition position>
+unsigned Option<type, position>::initializeFlags() {
   unsigned flags = 1;
   flags |= ((type == OptionType::PUT) << 1);
+  flags |= ((position == OptionPosition::SHORT) << 2);
   return (flags);
 };
 
 // Generic methods must be in .hpp!
-template <OptionType type>
-Option<type>::Option(double strikePrice, double timeToMaturity)
+template <OptionType type, OptionPosition position>
+Option<type, position>::Option(double strikePrice, double timeToMaturity)
     : m_strikePrice(strikePrice), m_timeToMaturity(timeToMaturity),
       m_flags(initializeFlags()){};
 
 // Useful aliases for common Option configurations:
-using CallOption = Option<OptionType::CALL>;
-using PutOption = Option<OptionType::PUT>;
+using LongCall = Option<OptionType::CALL, OptionPosition::LONG>;
+using ShortCall = Option<OptionType::CALL, OptionPosition::SHORT>;
+using LongPut = Option<OptionType::PUT, OptionPosition::LONG>;
+using ShortPut = Option<OptionType::PUT, OptionPosition::SHORT>;
 
 // Just to ilustrate the example from the comment of class "Option":
-template <OptionType type> void prettyPrint(Option<type> anyOption) {}
+template <OptionType type, OptionPosition position>
+void prettyPrint(Option<type, position> anyOption) {}
