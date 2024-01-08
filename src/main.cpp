@@ -2,6 +2,7 @@
 #include <sstream>
 #include <vector>
 
+#include "input.h"
 #include "option.hpp"
 
 using namespace std;
@@ -22,34 +23,28 @@ int main() {
   vector<OptionBase *> portfolio;
 
   while (true) {
+    cerr << "Please specify another european option:" << endl;
+
     string line;
     cin >> line;
-    std::stringstream ss(line);
-    std::string token;
-    vector<string> elems;
-    while (std::getline(ss, token, ',')) {
-      elems.push_back(token);
-    }
+    Input input = parseIntoParameters(line);
 
-    string type = elems[0], position = elems[1];
-    double strike = stod(elems[2]), timeToMaturity = stod(elems[3]),
-           volume = stod(elems[4]);
-
-    if (type == "C" && position == "L") {
+    if (input.type == 'C' && input.position == 'L') {
       portfolio.push_back(new Option<OptionType::CALL, OptionPosition::LONG>(
-          strike, timeToMaturity));
-    } else if (type == "P" && position == "L") {
+          input.strike, input.timeToMaturity));
+    } else if (input.type == 'P' && input.position == 'L') {
       portfolio.push_back(new Option<OptionType::PUT, OptionPosition::LONG>(
-          strike, timeToMaturity));
-    } else if (type == "C" && position == "S") {
+          input.strike, input.timeToMaturity));
+    } else if (input.type == 'C' && input.position == 'S') {
       portfolio.push_back(new Option<OptionType::CALL, OptionPosition::SHORT>(
-          strike, timeToMaturity));
-    } else if (type == "P" && position == "S") {
+          input.strike, input.timeToMaturity));
+    } else if (input.type == 'P' && input.position == 'S') {
       portfolio.push_back(new Option<OptionType::PUT, OptionPosition::SHORT>(
-          strike, timeToMaturity));
+          input.strike, input.timeToMaturity));
     }
 
-    cout << "payout variance before purchase: " << 0 << endl;
+    cerr << "payout variance before purchase: " << 0 << endl;
+    cerr << "payout variance after purchase: " << 0 << endl;
   }
 
   for (auto option : portfolio) {

@@ -4,6 +4,7 @@ project( project )
 set( SOURCES
 	src/main.cpp
   src/option.cpp
+  src/input.cpp
 )
 
 add_executable( project ${SOURCES} )
