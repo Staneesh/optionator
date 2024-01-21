@@ -5,6 +5,7 @@ set( SOURCES
 	src/main.cpp
   src/option.cpp
   src/input.cpp
+  src/simulator.cpp
 )
 
 add_executable( project ${SOURCES} )
