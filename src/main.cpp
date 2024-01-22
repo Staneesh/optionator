@@ -7,6 +7,7 @@
 #include "input.h"
 #include "option.hpp"
 #include "simulator.h"
+#include "varcalc.hpp"
 
 using namespace std;
 
@@ -57,7 +58,7 @@ int main() {
 */
   // test
 
-  double iterations = 1000000;
+  double iterations = 10000/*00*/;
   double initialPrice = 5000;
   double years = 1.0;
   double numDays = 365.0;

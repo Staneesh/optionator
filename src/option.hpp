@@ -67,6 +67,10 @@ public:
 
   double price(double spotPrice, double volatility, double riskFreeRate) const;
 
+  double getTimetoMaturity();
+
+  double getStrikePrice();
+
 private:
   static unsigned initializeFlags();
   // Helper method to calculate cumulative distribution function (CDF) of the
@@ -130,3 +134,13 @@ using ShortPut = Option<OptionType::PUT, OptionPosition::SHORT>;
 // Just to ilustrate the example from the comment of class "Option":
 template <OptionType type, OptionPosition position>
 void prettyPrint(Option<type, position> anyOption) {}
+
+template <OptionType type, OptionPosition position>
+double Option<type, position>::getTimetoMaturity() {
+  return this->m_timeToMaturity;
+}
+
+template <OptionType type, OptionPosition position>
+double Option<type, position>::getStrikePrice() {
+  return this->m_strikePrice;
+}
