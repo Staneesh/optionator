@@ -1,4 +1,5 @@
 #pragma once
+#include <cmath>
 
 // This enum is specifying if the option is a call or a put.
 // Currently it assumes that the underlying option is European.
@@ -116,12 +117,6 @@ template <OptionType type, OptionPosition position>
 Option<type, position>::Option(double strikePrice, double timeToMaturity)
     : m_strikePrice(strikePrice), m_timeToMaturity(timeToMaturity),
       m_flags(initializeFlags()){};
-
-template <OptionType type, OptionPosition position>
-double Option<type, position>::payoff(double spot) const {
-  /* TODO */
-  return 0;
-}
 
 // Useful aliases for common Option configurations:
 using LongCall = Option<OptionType::CALL, OptionPosition::LONG>;
