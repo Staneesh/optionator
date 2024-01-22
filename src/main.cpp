@@ -2,6 +2,7 @@
 #include <sstream>
 #include <vector>
 #include <random>
+#include <cmath>
 
 #include "input.h"
 #include "option.hpp"
@@ -56,11 +57,11 @@ int main() {
 */
   // test
 
-  double iterations = 10/*0000*/;
+  double iterations = 1000000;
   double initialPrice = 5000;
   double years = 1.0;
-  double numDays = /*365.0*/ 3;
-  double timeStep = 1.0 / (40.0 * numDays);
+  double numDays = 365.0;
+  double timeStep = 1.0 / 100.0;
   double mu = 0.05;
   double sigma = 0.2;
 
@@ -68,8 +69,23 @@ int main() {
 
   simulator.runSimulation();
 
-  cout << simulator.getPrices()[1][1];
-  //end of test
+  double average = 0.0;
+
+  for (int i=0; i<iterations; i++){
+      average += simulator.getPrices()[i][numDays-1];
+  }
+  average /= iterations;
+
+  double var = 0;
+  for (int i = 0; i < iterations; i++ ) {
+      var += (simulator.getPrices()[i][numDays-1] - average)*(simulator.getPrices()[i][numDays-1] - average);
+  }
+  var /= iterations;
+  std::cout << "E[x_t] from sim: " << average << std::endl;
+
+  std::cout << "var from simulation " << var << ", from formula " << initialPrice*initialPrice*exp(2.0*(mu/(numDays*years))*years*numDays)*(exp(pow(sigma/(sqrt(numDays*years)),2)*years*numDays)-1.0) << std::endl;
+
+//end of test
 
   return 0;
 }

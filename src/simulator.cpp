@@ -19,7 +19,7 @@ void StockSimulator::runSimulation() {
         for (int j = 0; j < T * days; ++j) {
             for (int k = 0; k < 1 / timestep; ++k) {
                 double dW = distribution(generator);
-                double change = timestep * mu + sigma * temp * sqrt(timestep) * dW;
+                double change = (timestep/(T*days)) * mu + sigma * temp * sqrt(timestep / (T*days)) * dW;
                 temp = temp + change;
             }
             prices[i][j] = temp;
