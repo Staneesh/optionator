@@ -15,7 +15,10 @@ enum OptionPosition {
   SHORT,
 };
 
-class OptionBase {};
+class OptionBase {
+public:
+  double payoff(double spot) const; // Interface.
+};
 
 // The below block defines a class template - you can imagine it defines
 // a whole family of classes called 'Option', such that the OptionType can
