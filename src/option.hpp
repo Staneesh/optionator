@@ -85,6 +85,8 @@ private:
   double europeanPutPrice(double spotPrice, double volatility,
                           double riskFreeRate) const;
 
+  double payoff(double spot) const;
+
   // Member variables - `m` stands for Member - useful as C++ does not enforce
   // `this.value` notation, so the `m_` helps us tell members variables apart.
   const double m_strikePrice;
@@ -114,6 +116,12 @@ template <OptionType type, OptionPosition position>
 Option<type, position>::Option(double strikePrice, double timeToMaturity)
     : m_strikePrice(strikePrice), m_timeToMaturity(timeToMaturity),
       m_flags(initializeFlags()){};
+
+template <OptionType type, OptionPosition position>
+double Option<type, position>::payoff(double spot) const {
+  /* TODO */
+  return 0;
+}
 
 // Useful aliases for common Option configurations:
 using LongCall = Option<OptionType::CALL, OptionPosition::LONG>;
