@@ -1,4 +1,5 @@
 #pragma once
+#include <cmath>
 
 // This enum is specifying if the option is a call or a put.
 // Currently it assumes that the underlying option is European.
@@ -14,7 +15,10 @@ enum OptionPosition {
   SHORT,
 };
 
-class OptionBase {};
+class OptionBase {
+public:
+  double payoff(double spot) const; // Interface.
+};
 
 // The below block defines a class template - you can imagine it defines
 // a whole family of classes called 'Option', such that the OptionType can
@@ -84,6 +88,8 @@ private:
   // Method to calculate put option price via put-call parity
   double europeanPutPrice(double spotPrice, double volatility,
                           double riskFreeRate) const;
+
+  double payoff(double spot) const;
 
   // Member variables - `m` stands for Member - useful as C++ does not enforce
   // `this.value` notation, so the `m_` helps us tell members variables apart.
