@@ -22,8 +22,6 @@ public:
 
     void runSimulation();
 
-    void runSimulationParallel();
-
     const std::vector<std::vector<double>>& getPrices() const;
 
     void printPrices() const;

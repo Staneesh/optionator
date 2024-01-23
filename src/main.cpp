@@ -59,11 +59,11 @@ int main() {
 */
   // test
 
-  double iterations = 2000000;
+  double iterations = 1000000;
   double initialPrice = 5000;
   double years = 1.0;
   double numDays = 365.0;
-  double timeStep = 1.0 / 200.0;
+  double timeStep = 1.0 / 100.0;
   double mu = 0.05;
   double sigma = 0.2;
 
@@ -71,7 +71,7 @@ int main() {
 
   auto startTime = std::chrono::high_resolution_clock::now();
 
-  simulator.runSimulationParallel();
+  simulator.runSimulation();
 
   auto endTime = std::chrono::high_resolution_clock::now();
 
