@@ -4,6 +4,7 @@
 #include <vector>
 #include <random>
 #include <cmath>
+#include <thread>
 
 class StockSimulator {
 private:
@@ -20,6 +21,8 @@ public:
     StockSimulator(double iterations, double initialPrice, double years, double numDays, double timeStep, double mu, double sigma);
 
     void runSimulation();
+
+    void runSimulationParallel();
 
     const std::vector<std::vector<double>>& getPrices() const;
 

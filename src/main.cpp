@@ -3,6 +3,8 @@
 #include <vector>
 #include <random>
 #include <cmath>
+#include <chrono>
+#include <thread>
 
 #include "input.h"
 #include "option.hpp"
@@ -57,17 +59,35 @@ int main() {
 */
   // test
 
-  double iterations = 1000000;
+  double iterations = 2000000;
   double initialPrice = 5000;
   double years = 1.0;
   double numDays = 365.0;
-  double timeStep = 1.0 / 100.0;
+  double timeStep = 1.0 / 200.0;
   double mu = 0.05;
   double sigma = 0.2;
 
   StockSimulator simulator(iterations, initialPrice, years, numDays, timeStep, mu, sigma);
 
-  simulator.runSimulation();
+  auto startTime = std::chrono::high_resolution_clock::now();
+
+  simulator.runSimulationParallel();
+
+  auto endTime = std::chrono::high_resolution_clock::now();
+
+  auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
+  std::cout << "Function duration: " << duration.count() << " milliseconds" << std::endl;
+  /*
+  before multi-threading around 30000 miliseconds for double iterations = 2000000;
+  double initialPrice = 5000;
+  double years = 1.0;
+  double numDays = 2.0;
+  double timeStep = 1.0 / 400.0;
+  double mu = 0.05;
+  double sigma = 0.2;
+
+  //after multi-threading around 3000 miliseconds
+*/
 
   double average = 0.0;
 
@@ -81,9 +101,9 @@ int main() {
       var += (simulator.getPrices()[i][numDays-1] - average)*(simulator.getPrices()[i][numDays-1] - average);
   }
   var /= iterations;
-  std::cout << "E[x_t] from sim: " << average << std::endl;
+  std::cout << "E[x_t] from sim: " << average <<", from formula " << initialPrice*exp(mu/(365*years)*years*numDays) << std::endl;
 
-  std::cout << "var from simulation " << var << ", from formula " << initialPrice*initialPrice*exp(2.0*(mu/(numDays*years))*years*numDays)*(exp(pow(sigma/(sqrt(numDays*years)),2)*years*numDays)-1.0) << std::endl;
+  std::cout << "var from simulation " << var << ", from formula " << initialPrice*initialPrice*exp(2.0*(mu/(365*years))*years*numDays)*(exp(pow(sigma/(sqrt(365*years)),2)*years*numDays)-1.0) << std::endl;
 
 //end of test
 
