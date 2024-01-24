@@ -6,7 +6,6 @@ set( SOURCES
   src/option.cpp
   src/input.cpp
   src/simulator.cpp
-  src/varcalc.cpp
 )
 
 add_executable( project ${SOURCES} )

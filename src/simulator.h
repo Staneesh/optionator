@@ -4,6 +4,7 @@
 #include <vector>
 #include <random>
 #include <cmath>
+#include <thread>
 
 class StockSimulator {
 private:
