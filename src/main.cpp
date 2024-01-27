@@ -9,11 +9,13 @@
 #include "input.h"
 #include "option.hpp"
 #include "simulator.h"
+#include "varcalc.hpp"
 
 using namespace std;
 
 int main() {
 
+/*
   cin.tie();
   cout.tie();
   ios_base::sync_with_stdio(false);
@@ -27,7 +29,7 @@ int main() {
   prettyPrint(put);
 
   vector<OptionBase *> portfolio;
-/*
+
   while (true) {
     cerr << "Please specify another european option:" << endl;
 
@@ -106,6 +108,30 @@ int main() {
   std::cout << "var from simulation " << var << ", from formula " << initialPrice*initialPrice*exp(2.0*(mu/(365*years))*years*numDays)*(exp(pow(sigma/(sqrt(365*years)),2)*years*numDays)-1.0) << std::endl;
 
 //end of test
+
+  LongCall callOption1(5000, 60);
+  LongCall callOption2(5000, 60);
+  LongCall callOption3(5000, 60);
+  LongCall callOption4(5000, 60);
+  LongCall callOption5(5000, 60);
+
+    // Create a portfolio of options
+  std::vector<OptionBase*> optionPortfolio = {&callOption1,&callOption2,&callOption3,&callOption4,&callOption5};
+
+    // Create an instance of VarCalc
+  VarCalc varCalculator(simulator.getPrices(), optionPortfolio);
+
+    // Calculate and retrieve payout properties
+  PayoutProperties payoutProps = varCalculator.getPayoff();
+
+    // Access the properties
+  double expectedValue = payoutProps.ev;
+  double variance = payoutProps.var;
+  double standardDeviation = payoutProps.stdev;
+
+  std::cout << "Expected Value: " << expectedValue << std::endl;
+  std::cout << "Variance: " << variance << std::endl;
+  std::cout << "Standard Deviation: " << standardDeviation << std::endl;
 
   return 0;
 }
