@@ -67,6 +67,8 @@ public:
 
   double price(double spotPrice, double volatility, double riskFreeRate) const;
 
+  double getTimeToMaturity() const { return this->m_timeToMaturity; };
+
 private:
   static unsigned initializeFlags();
   // Helper method to calculate cumulative distribution function (CDF) of the
