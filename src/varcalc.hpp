@@ -15,7 +15,7 @@ public:
 
   VarCalc(const std::vector<std::vector<double>> &p,
           const std::vector<OptionBase *> pf)
-      : paths(p), portfolio(pf){};
+      : portfolio(pf), paths(p){};
 
   PayoutProperties getPayoff();
 
