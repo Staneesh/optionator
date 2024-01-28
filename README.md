@@ -26,3 +26,6 @@ Use the below snippet to run the project:
 nix run
 ```
 
+## Our Teamwork
+
+We divided work and tracked progress by using only `GitHub` issues. Please see our [master issue here](https://github.com/Staneesh/optionator/issues/1).
