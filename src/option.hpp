@@ -17,7 +17,13 @@ enum OptionPosition {
 
 class OptionBase {
 public:
-  double payoff(double spot) const; // Interface.
+  virtual double getTimeToMaturity() const = 0;
+  double payoff(double spot) const {
+    // Implement the generic payoff logic here
+    return this->payoffImpl(spot);
+  }
+private:
+  virtual double payoffImpl(double spot) const = 0; // Virtual function to be implemented by derived classes
 };
 
 // The below block defines a class template - you can imagine it defines
@@ -67,7 +73,7 @@ public:
 
   double price(double spotPrice, double volatility, double riskFreeRate) const;
 
-  double getTimeToMaturity() const { return this->m_timeToMaturity; };
+  double getTimeToMaturity() const override { return this->m_timeToMaturity; };
 
 private:
   static unsigned initializeFlags();
@@ -106,6 +112,8 @@ private:
     bit 2: if 0 - long, if 1 - short
   */
   const unsigned m_flags : 3;
+
+  double payoffImpl(double spot) const override;
 };
 
 // A static method must be defined in a header:
