@@ -27,6 +27,7 @@ int main() {
   double timeStep = 1.0 / 100.0;
   double mu = 0.05;
   double sigma = 0.2;
+  double variance_cutoff;
 
   StockSimulator simulator(iterations, initialPrice, years, numDays, timeStep,
                            mu, sigma);
@@ -43,6 +44,10 @@ int main() {
             << std::endl;
 
   vector<OptionBase *> portfolio;
+
+  std::cout << "Specify variance cutoff: ";
+  std::cin >> variance_cutoff;
+
 
   int Trades=0;
 
@@ -91,6 +96,10 @@ int main() {
     std::cout << "Expected Value: " << expectedValue << std::endl;
     std::cout << "Variance: " << variance << std::endl;
     std::cout << "Standard Deviation: " << standardDeviation << std::endl;
+
+    if(variance_cutoff < variance){
+      std::cout << "Variance cutoff exceeded, terminating program." << std::endl;
+      break;}
   }
 
   portfolio.clear();
