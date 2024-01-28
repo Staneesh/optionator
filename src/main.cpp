@@ -44,6 +44,13 @@ int main() {
 
   vector<OptionBase *> portfolio;
 
+  int Trades=0;
+
+  std::cout << "Trades: " << 0 << std::endl;
+  std::cout << "Expected Value: " << 0 << std::endl;
+  std::cout << "Variance: " << 0 << std::endl;
+  std::cout << "Standard Deviation: " << 0 << std::endl;
+
   while (true) {
     cerr << "Please specify another european option (type, position, strike, "
             "ttm, volume)"
@@ -52,21 +59,21 @@ int main() {
     string line;
     cin >> line;
     Input input = parseIntoParameters(line);
-
-    if (input.type == 'C' && input.position == 'L') {
-      portfolio.push_back(new Option<OptionType::CALL, OptionPosition::LONG>(
-          input.strike, input.timeToMaturity));
-    } else if (input.type == 'P' && input.position == 'L') {
-      portfolio.push_back(new Option<OptionType::PUT, OptionPosition::LONG>(
-          input.strike, input.timeToMaturity));
-    } else if (input.type == 'C' && input.position == 'S') {
-      portfolio.push_back(new Option<OptionType::CALL, OptionPosition::SHORT>(
-          input.strike, input.timeToMaturity));
-    } else if (input.type == 'P' && input.position == 'S') {
-      portfolio.push_back(new Option<OptionType::PUT, OptionPosition::SHORT>(
-          input.strike, input.timeToMaturity));
+    for(int i=0; i<input.volume; i++){
+      if (input.type == 'C' && input.position == 'L') {
+        portfolio.push_back(new Option<OptionType::CALL, OptionPosition::LONG>(
+            input.strike, input.timeToMaturity));
+      } else if (input.type == 'P' && input.position == 'L') {
+        portfolio.push_back(new Option<OptionType::PUT, OptionPosition::LONG>(
+            input.strike, input.timeToMaturity));
+      } else if (input.type == 'C' && input.position == 'S') {
+        portfolio.push_back(new Option<OptionType::CALL, OptionPosition::SHORT>(
+            input.strike, input.timeToMaturity));
+      } else if (input.type == 'P' && input.position == 'S') {
+        portfolio.push_back(new Option<OptionType::PUT, OptionPosition::SHORT>(
+            input.strike, input.timeToMaturity));
+      }
     }
-
     // Create an instance of VarCalc
     VarCalc varCalculator(simulator.getPrices(), portfolio);
 
@@ -78,6 +85,9 @@ int main() {
     double variance = payoutProps.var;
     double standardDeviation = payoutProps.stdev;
 
+    Trades++;
+
+    std::cout << "Trades: " << Trades << std::endl;
     std::cout << "Expected Value: " << expectedValue << std::endl;
     std::cout << "Variance: " << variance << std::endl;
     std::cout << "Standard Deviation: " << standardDeviation << std::endl;
