@@ -24,7 +24,7 @@ PayoutProperties VarCalc::getPayoff() {
   std::for_each(payoffs.begin(), payoffs.end(),
                 [&](const double d) { accum += (d - mean) * (d - mean); });
 
-  double var = accum / (payoffs.size() - 1);
+  double var = accum / payoffs.size();
   double stdev = sqrt(var);
 
   return {.ev = mean, .var = var, .stdev = stdev};
