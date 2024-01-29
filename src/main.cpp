@@ -2,6 +2,7 @@
 #include <cmath>
 #include <iostream>
 #include <random>
+#include <fstream>
 #include <sstream>
 #include <thread>
 #include <vector>
@@ -14,9 +15,37 @@
 using namespace std;
 
 int main() {
+
+
   cin.tie();
   cout.tie();
   ios_base::sync_with_stdio(false);
+
+  //.CSV LOADING
+  //path to the .csv
+  std::string sample = "/home/nadim/sample/sample_medium.csv";
+
+  //opening the .csv
+  std::ifstream file(sample);
+
+  //check if the .csv opened successfully
+  if (!file.is_open()) {
+    std::cerr << "Error opening file: " << sample << std::endl;
+    return 1;
+  }
+
+  //vector storing sample data
+  std::vector<std::string> sample_data;
+
+  std::string line;
+  while (std::getline(file, line)) {
+    sample_data.push_back(line);
+  }
+
+  file.close();
+  //END OF .CSV LOADING
+
+
 
   cerr << "Hello! Running simulations first..." << endl;
 
@@ -48,14 +77,55 @@ int main() {
   std::cout << "Specify variance cutoff: ";
   std::cin >> variance_cutoff;
 
-
   int Trades=0;
-
   std::cout << "Trades: " << 0 << std::endl;
   std::cout << "Expected Value: " << 0 << std::endl;
   std::cout << "Variance: " << 0 << std::endl;
   std::cout << "Standard Deviation: " << 0 << std::endl;
 
+  for(const auto& element : sample_data){
+
+    Input input = parseIntoParameters(element);
+    for(int i=0; i<input.volume; i++){
+      if (input.type == 'C' && input.position == 'L') {
+        portfolio.push_back(new Option<OptionType::CALL, OptionPosition::LONG>(
+            input.strike, input.timeToMaturity));
+      } else if (input.type == 'P' && input.position == 'L') {
+        portfolio.push_back(new Option<OptionType::PUT, OptionPosition::LONG>(
+            input.strike, input.timeToMaturity));
+      } else if (input.type == 'C' && input.position == 'S') {
+        portfolio.push_back(new Option<OptionType::CALL, OptionPosition::SHORT>(
+            input.strike, input.timeToMaturity));
+      } else if (input.type == 'P' && input.position == 'S') {
+        portfolio.push_back(new Option<OptionType::PUT, OptionPosition::SHORT>(
+            input.strike, input.timeToMaturity));
+      }
+    }
+    // Create an instance of VarCalc
+    VarCalc varCalculator(simulator.getPrices(), portfolio);
+
+    // Calculate and retrieve payout properties
+    PayoutProperties payoutProps = varCalculator.getPayoff();
+
+    // Access the properties
+    double expectedValue = payoutProps.ev;
+    double variance = payoutProps.var;
+    double standardDeviation = payoutProps.stdev;
+
+    Trades++;
+
+    std::cout << std::endl << "Trades: " << Trades << std::endl;
+    std::cout << "Expected Value: " << expectedValue << std::endl;
+    std::cout << "Variance: " << variance << std::endl;
+    std::cout << "Standard Deviation: " << standardDeviation << std::endl;
+
+    if(variance_cutoff < variance){
+      std::cout << "Variance cutoff exceeded, terminating program." << std::endl;
+      break;}
+  }
+
+
+/*
   while (true) {
     cerr << "Please specify another european option (type, position, strike, "
             "ttm, volume)"
@@ -128,13 +198,13 @@ int main() {
         endTime - startTime);
     std::cout << "Function duration: " << duration.count() << " milliseconds"
               << std::endl;
-    /*
-    before multi-threading around 30000 miliseconds for double iterations =
-    2000000; double initialPrice = 5000; double years = 1.0; double numDays
-    = 2.0; double timeStep = 1.0 / 400.0; double mu = 0.05; double sigma = 0.2;
+
+    //before multi-threading around 30000 miliseconds for double iterations =
+    //2000000; double initialPrice = 5000; double years = 1.0; double numDays
+    //= 2.0; double timeStep = 1.0 / 400.0; double mu = 0.05; double sigma = 0.2;
 
     //after multi-threading around 3000 miliseconds
-  */
+
 
     double average = 0.0;
 
@@ -188,6 +258,6 @@ int main() {
     std::cout << "Variance: " << variance << std::endl;
     std::cout << "Standard Deviation: " << standardDeviation << std::endl;
   };
-
+*/
   return 0;
 }
