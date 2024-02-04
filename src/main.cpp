@@ -23,7 +23,7 @@ int main() {
 
   //.CSV LOADING
   //path to the .csv
-  std::string sample = "/home/nadim/sample/sample_medium.csv";
+  std::string sample = "/home/nadim/sample/sample_large.csv";
 
   //opening the .csv
   std::ifstream file(sample);
@@ -49,16 +49,15 @@ int main() {
 
   cerr << "Hello! Running simulations first..." << endl;
 
-  double iterations = 1000000;
+  double iterations = 2000000;
   double initialPrice = 5000;
-  double years = 1.0;
-  double numDays = 365.0;
+  double numDays = 60;
   double timeStep = 1.0 / 100.0;
   double mu = 0.05;
   double sigma = 0.2;
   double variance_cutoff;
 
-  StockSimulator simulator(iterations, initialPrice, years, numDays, timeStep,
+  StockSimulator simulator(iterations, initialPrice, numDays, timeStep,
                            mu, sigma);
 
   auto startTime = std::chrono::high_resolution_clock::now();
@@ -69,19 +68,19 @@ int main() {
 
   auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(
       endTime - startTime);
-  std::cout << "Function duration: " << duration.count() << " milliseconds"
+  cerr << "Function duration: " << duration.count() << " milliseconds"
             << std::endl;
 
   vector<OptionBase *> portfolio;
 
-  std::cout << "Specify variance cutoff: ";
+  cerr << "Specify variance cutoff: ";
   std::cin >> variance_cutoff;
 
   int Trades=0;
-  std::cout << "Trades: " << 0 << std::endl;
-  std::cout << "Expected Value: " << 0 << std::endl;
-  std::cout << "Variance: " << 0 << std::endl;
-  std::cout << "Standard Deviation: " << 0 << std::endl;
+  cerr << "Trade: " << 0 << std::endl;
+  cerr << "Expected Value: " << 0 << std::endl;
+  cerr << "Variance: " << 0 << std::endl;
+  cerr << "Standard Deviation: " << 0 << std::endl;
 
   for(const auto& element : sample_data){
 
@@ -114,13 +113,13 @@ int main() {
 
     Trades++;
 
-    std::cout << std::endl << "Trades: " << Trades << std::endl;
-    std::cout << "Expected Value: " << expectedValue << std::endl;
-    std::cout << "Variance: " << variance << std::endl;
-    std::cout << "Standard Deviation: " << standardDeviation << std::endl;
+    cerr << std::endl << "Trade: " << Trades << std::endl;
+    cerr << "Expected Value: " << expectedValue << std::endl;
+    cerr << "Variance: " << variance << std::endl;
+    cerr << "Standard Deviation: " << standardDeviation << std::endl;
 
     if(variance_cutoff < variance){
-      std::cout << "Variance cutoff exceeded, terminating program." << std::endl;
+      cerr << "Variance cutoff exceeded, terminating program." << std::endl;
       break;}
   }
 
