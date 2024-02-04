@@ -4,8 +4,8 @@
 #include <random>
 #include <cmath>
 
-StockSimulator::StockSimulator(double iterations, double initialPrice, double years, double numDays, double timeStep, double mu, double sigma)
-    : iter(iterations), S_0(initialPrice), T(years), days(numDays), timestep(timeStep), mu(mu), sigma(sigma),
+StockSimulator::StockSimulator(double iterations, double initialPrice, double numDays, double timeStep, double mu, double sigma)
+    : iter(iterations), S_0(initialPrice), days(numDays), timestep(timeStep), mu(mu), sigma(sigma),
       prices(iterations, std::vector<double>(numDays, 0.0)) {}
 
 
@@ -19,7 +19,7 @@ void StockSimulator::runSimulation() {
         for (int i = start; i < end; ++i) {
             double temp = S_0;
 
-            for (int j = 0; j < T * days; ++j) {
+            for (int j = 0; j < days; ++j) {
                 for (int k = 0; k < 1 / timestep; ++k) {
                     double dW = distribution(generator);
                     double change = timestep * temp * mu / 365.0 + sigma/sqrt(365.0) * temp * sqrt(timestep) * dW;

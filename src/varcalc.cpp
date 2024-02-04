@@ -11,7 +11,7 @@ PayoutProperties VarCalc::getPayoff() {
     double pathPayoff = 0;                 // Calculate the payoff on every path
     for (auto &option : this->portfolio) { // For every option in our porfolio
       double T = option->getTimeToMaturity();
-      double spot = path[static_cast<int>(T)];
+      double spot = path[static_cast<int>(T-1)];
       pathPayoff += option->payoff(spot);  // Accumulate individual path payoffs
     }
     payoffs.push_back(pathPayoff);

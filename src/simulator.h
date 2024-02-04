@@ -10,7 +10,6 @@ class StockSimulator {
 private:
     double iter;
     double S_0;
-    double T;
     double days;
     double timestep;
     double mu;
@@ -18,7 +17,7 @@ private:
     std::vector<std::vector<double>> prices;
 
 public:
-    StockSimulator(double iterations, double initialPrice, double years, double numDays, double timeStep, double mu, double sigma);
+    StockSimulator(double iterations, double initialPrice, double numDays, double timeStep, double mu, double sigma);
 
     void runSimulation();
 
